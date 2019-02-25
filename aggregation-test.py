@@ -31,8 +31,8 @@ if r1.status_code == requests.codes.ok:
 		#pp_json(network_path_stats)
 
 		if network_path_stats['pathId'] == path_id:
-			#pp_json(network_path_stats)
-			if network_path_stats['data']['availableCapacity'] != []:
+			pp_json(network_path_stats)
+			if network_path_stats['instrumentation'] == "ONE_WAY":
 				# Single-ended paths have data within 'data'
 				for test in network_path_stats['data']['availableCapacity']:
 					count += 1
