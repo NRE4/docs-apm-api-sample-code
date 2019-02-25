@@ -11,8 +11,12 @@ if r1.status_code == requests.codes.ok:
 		r2 = get_network_path(organization['id'])
 		if r2.status_code == requests.codes.ok:
 			for network_path in r2.json():
-				print('   Network path ({}) name - {}'.format(network_path['id'], network_path['pathName']))
-				# pp_json(network_path)
+				if network_path['asymmetric']:
+					instrumentation = "Dual-ended,  "
+				else:
+					instrumentation = "Single-ended,"
+				print('   Network path ({}) {} name - {}'.format(network_path['id'], instrumentation, network_path['pathName']))
+				#pp_json(network_path)
 		else:
 			print_err(r2)
 else:
