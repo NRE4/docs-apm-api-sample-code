@@ -12,6 +12,7 @@ To use these files:
 	* The "app-..." files (e.g. python app-organizations.py) retrieve a variety of APM system data.
 	* The "path-..." files create/delete/show network paths identified in "paths.csv" file.
 		* Update "paths.csv" with valid information then run any of the "path-..." files (e.g. python path-create.py) to see what they do.
+	* "aggregation-test.py" is used to show how data is aggregated over time.
 	* Functions used in the program files are defined in api_fns.py.
 1. Modify any of these files or create your own code to use the APM API.
 
