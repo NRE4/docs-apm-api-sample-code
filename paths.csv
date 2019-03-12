@@ -1,4 +1,4 @@
 org_id,source_mp,target
-<org_id>,<appliance_name>,www.abc.com
-<org_id>,<appliance_name>,www.def.com
-<org_id>,<appliance_name>,www.ghi.com
+<org_id>,<appliance_name>,www.example.com
+<org_id>,<appliance_name>,www.example.com
+<org_id>,<appliance_name>,www.example.com
