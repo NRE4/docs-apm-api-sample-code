@@ -6,8 +6,6 @@ import json
 import time
 from credentials import username, password, apm_server
 
-api_key = "api_key=v3"
-
 
 #
 # Print error response code and error text returned
@@ -44,7 +42,7 @@ def pp_json(json_obj, sort=True, indents=4):
 # - Returns all organizations associated with the current user.
 #
 def get_org():
-	url = "https://{}/api/v3/organization?{}".format(apm_server, api_key)
+	url = "https://{}/api/v3/organization".format(apm_server)
 	return(requests.get(url, auth=(username, password)))
 
 
@@ -54,10 +52,9 @@ def get_org():
 # 	org_id - organization id
 #
 def get_appliance(org_id=None):
-	url = "https://{}/api/v3/appliance?".format(apm_server)
+	url = "https://{}/api/v3/appliance".format(apm_server)
 	if org_id != None:
-		url += "orgId={}&".format(org_id)
-	url += api_key
+		url += "?orgId={}".format(org_id)
 	return(requests.get(url, auth=(username, password)))
 
 
@@ -67,7 +64,7 @@ def get_appliance(org_id=None):
 # 	appliance_id - appliance id
 #
 def get_appliance_id(appliance_id):
-	url = "https://{}/api/v3/appliance/{}?{}".format(apm_server, appliance_id, api_key)
+	url = "https://{}/api/v3/appliance/{}".format(apm_server, appliance_id)
 	return(requests.get(url, auth=(username, password)))
 
 
@@ -77,10 +74,9 @@ def get_appliance_id(appliance_id):
 # 	org_id - organization id
 #
 def get_web_app_group(org_id=None):
-	url = "https://{}/api/v3/webApplication?".format(apm_server)
+	url = "https://{}/api/v3/webApplication".format(apm_server)
 	if org_id != None:
-		url += "orgId={}&".format(org_id)
-	url += api_key
+		url += "?orgId={}".format(org_id)
 	return(requests.get(url, auth=(username, password)))
 
 
@@ -90,7 +86,7 @@ def get_web_app_group(org_id=None):
 # 	web_app_grp_id - web app group id
 #
 def get_web_app_group_id(web_app_grp_id):
-	url = "https://{}/api/v3/webApplication/{}?{}".format(apm_server, web_app_grp_id, api_key)
+	url = "https://{}/api/v3/webApplication/{}".format(apm_server, web_app_grp_id)
 	return(requests.get(url, auth=(username, password)))
 
 
@@ -100,7 +96,7 @@ def get_web_app_group_id(web_app_grp_id):
 # 	web_app_grp_id - web app group id
 #
 def get_web_path(web_app_grp_id):
-	url = "https://{}/api/v3/webApplication/{}/monitor?{}".format(apm_server, web_app_grp_id, api_key)
+	url = "https://{}/api/v3/webApplication/{}/monitor".format(apm_server, web_app_grp_id)
 	return(requests.get(url, auth=(username, password)))
 
 
@@ -119,8 +115,7 @@ def get_web_path_stats(org_id=None, start_time=None, end_time=None):
 	if start_time != None:
 		url += "from={}&".format(start_time)
 	if end_time != None:
-		url += "to={}&".format(end_time)
-	url += api_key
+		url += "to={}".format(end_time)
 	return(requests.get(url, auth=(username, password)))
 
 
@@ -143,8 +138,7 @@ def get_web_path_stats_id(web_app_group_id, web_path_id, start_time=None, end_ti
 	if end_time != None:
 		url += "to={}&".format(end_time)
 	if metric != None:
-		url += "metric={}&".format(metric)
-	url += api_key
+		url += "metric={}".format(metric)
 	return(requests.get(url, auth=(username, password)))
 
 
@@ -154,10 +148,9 @@ def get_web_path_stats_id(web_app_group_id, web_path_id, start_time=None, end_ti
 # 	org_id - organization id
 #
 def get_network_path(org_id=None):
-	url = "https://{}/api/v3/path?".format(apm_server)
+	url = "https://{}/api/v3/path".format(apm_server)
 	if org_id != None:
-		url += "orgId={}&".format(org_id)
-	url += api_key
+		url += "?orgId={}".format(org_id)
 	return(requests.get(url, auth=(username, password)))
 
 
@@ -186,10 +179,9 @@ def get_network_path_id(org_id, source_mp_name, target):
 # 	org_id - organization id
 #
 def get_network_path_status(org_id=None):
-	url = "https://{}/api/v3/path/status?".format(apm_server)
+	url = "https://{}/api/v3/path/status".format(apm_server)
 	if org_id != None:
-		url += "orgId={}&".format(org_id)
-	url += api_key
+		url += "?orgId={}".format(org_id)
 	return(requests.get(url, auth=(username, password)))
 
 
@@ -199,31 +191,33 @@ def get_network_path_status(org_id=None):
 # 	path_id - network path id
 #
 def get_network_path_status_id(path_id):
-	url = "https://{}/api/v3/path/{}/status?{}".format(apm_server, path_id, api_key)
+	url = "https://{}/api/v3/path/{}/status".format(apm_server, path_id)
 	return(requests.get(url, auth=(username, password)))
 
 
 #
 # Get network path stats (GET /v3/path/data)
-# - Returns network path stats for the specified organization. If org_id is "None" then info for all organizations is returned.
+# - Returns network path stats for the specified organization. If org_id is "None" then info for all organizations is returned. If path_id is "None" then info for all paths is returned.
 # 	org_id - organization id
+# 	path_id - path id
 # 	start_time - the start time of the time range in UNIX/epoch time
 # 	end_time - the end time of the time range in UNIX/epoch time
 # 		If no start or end time, stats for the last hour are returned
 # 	metric - the type of data to return ("totalcapacity", "utilizedcapacity", "availablecapacity", "latency", "datajitter", "dataloss", "voicejitter", "voiceloss", "mos", "rtt", "twamprtt", "twampjitter", "twamploss").
 #		If no metric is specified, all types are returned.
 #
-def get_network_path_stats(org_id=None, start_time=None, end_time=None, metric=None):
+def get_network_path_stats_id(org_id=None, path_id=None, start_time=None, end_time=None, metric=None):
 	url = "https://{}/api/v3/path/data?".format(apm_server)
 	if org_id != None:
 		url += "orgId={}&".format(org_id)
+	if path_id != None:
+		url += "pathIds={}&".format(path_id)
 	if start_time != None:
 		url += "from={}&".format(start_time)
 	if end_time != None:
 		url += "to={}&".format(end_time)
 	if metric != None:
-		url += "metric={}&".format(metric)
-	url += api_key
+		url += "metric={}".format(metric)
 	return(requests.get(url, auth=(username, password)))
 
 
@@ -235,7 +229,7 @@ def get_network_path_stats(org_id=None, start_time=None, end_time=None, metric=N
 #	target - target
 #
 def create_network_path(org_id, source_mp_name, target):
-	url = "https://{}/api/v3/path?{}".format(apm_server, api_key)
+	url = "https://{}/api/v3/path".format(apm_server)
 	headers = {
 		"Content-Type": "application/json"
 	}
@@ -256,7 +250,7 @@ def create_network_path(org_id, source_mp_name, target):
 #
 def delete_network_path(org_id, source_mp_name, target):
 	network_path_id = get_network_path_id(org_id, source_mp_name, target)
-	url = "https://{}/api/v3/path/{}?{}".format(apm_server, network_path_id, api_key)
+	url = "https://{}/api/v3/path/{}".format(apm_server, network_path_id)
 	return(requests.delete(url, auth=(username, password)))
 
 
@@ -266,7 +260,7 @@ def delete_network_path(org_id, source_mp_name, target):
 # 	org_id - organization id
 #
 def get_saved_lists(org_id):
-	url = "https://{}/api/v3/savedList?orgId={}&{}".format(apm_server, org_id, api_key)
+	url = "https://{}/api/v3/savedList?orgId={}".format(apm_server, org_id)
 	return(requests.get(url, auth=(username, password)))
 
 
@@ -276,8 +270,7 @@ def get_saved_lists(org_id):
 # 	org_id - organization id
 #
 def get_groups(org_id=None):
-	url = "https://{}/api/v3/group?".format(apm_server)
+	url = "https://{}/api/v3/group".format(apm_server)
 	if org_id != None:
-		url += "orgId={}&".format(org_id)
-	url += api_key
+		url += "?orgId={}".format(org_id)
 	return(requests.get(url, auth=(username, password)))

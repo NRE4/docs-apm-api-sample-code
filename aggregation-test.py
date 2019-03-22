@@ -1,5 +1,5 @@
 #
-#  Network paths - See how data is aggregated by changing days_back and day_range and seeing how Period changes.
+#  Network paths - See how data is aggregated by changing hours_back and hour_range and seeing how Period changes.
 #
 
 import math
@@ -10,21 +10,23 @@ metric = 'availablecapacity'
 
 org_id = '11111'  # organization ID
 path_id = 222222  # network path ID
-days_back = 0     # the number of days ago the range ends
-day_range = 30    # the number of days in the range
+hours_back = 24*0     # the number of hours ago the range ends
+hour_range = 24*10    # the number of hours in the range
 
-if (days_back == 0) & (day_range == 0):
+if (hours_back == 0) & (hour_range == 0):
 	start = end = None
 else:
-	end = math.floor(time.time()-(60*60*24*days_back))
-	start = (end - (60*60*24*day_range))
+	if (hour_range == 0):
+		hour_range = 1
+	end = math.floor(time.time()-(60*60*hours_back))
+	start = (end - math.floor(60*60*hour_range))
 
 print('Start time: {} ({})'.format(time.ctime(start), start))
 print('End time:   {} ({})'.format(time.ctime(end), end))
 print('Org id:     ({})'.format(org_id))
 print('Path id:    ({})'.format(path_id))
 
-r1 = get_network_path_stats(org_id, start, end, metric)
+r1 = get_network_path_stats_id(org_id, path_id, start, end, metric)
 if r1.status_code == requests.codes.ok:
 	for network_path_stats in r1.json():
 		print('   Network path ({})'.format(network_path_stats['pathId']))
@@ -49,7 +51,6 @@ elif r1.status_code == requests.codes.bad_request:
 	print_err_json(r1.json())
 else:
 	print_err(r1)
-
 
 print('Start time: {} ({})'.format(time.ctime(start), start))
 print('End time:   {} ({})'.format(time.ctime(end), end))

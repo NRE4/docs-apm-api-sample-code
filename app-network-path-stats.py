@@ -8,7 +8,7 @@ if r1.status_code == requests.codes.ok:
 	for organization in r1.json():
 		print('Org ({}) name --> {}'.format(organization['id'], organization['displayName']))
 
-		r2 = get_network_path_stats(organization['id'])
+		r2 = get_network_path_stats_id(organization['id'])
 		if r2.status_code == requests.codes.ok:
 			for network_path_stats in r2.json():
 				print('   Network path ({})'.format(network_path_stats['pathId']))
