@@ -20,3 +20,12 @@ with open('paths.csv', mode='r') as csv_file:
                   .format(row['org_id'], row['source_mp'], row['target']))
         else:
             print('Unable to create: {}'.format(r1.json()['messages'][0]))
+
+        network_path_id = get_network_path_id(row['org_id'], row['source_mp'],
+                                              row['target'])
+
+        r2 = add_network_path_location(network_path_id, row['location'])
+        if r2.status_code == requests.codes.ok:
+            print('Added location successfully: {}.'.format(row['location']))
+        else:
+            print('Unable to add location: {}.'.format(row['location']))

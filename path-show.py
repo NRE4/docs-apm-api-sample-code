@@ -21,6 +21,9 @@ with open('paths.csv', mode='r') as csv_file:
                                   network_path['target'],
                                   network_path['id'],
                                   network_path['pathName']))
+                    print('    Target located in: {}.'.format(
+                                  network_path['targetLocation']
+                                    ['formattedAddress']))
                     # pp_json(network_path)
         else:
             print_err(r1)

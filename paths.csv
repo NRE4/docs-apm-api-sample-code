@@ -1,4 +1,4 @@
-org_id,source_mp,target
-<org_id>,<appliance_name>,www.example.com
-<org_id>,<appliance_name>,www.example.com
-<org_id>,<appliance_name>,www.example.com
+org_id,source_mp,target,location
+<org_id>,<appliance_name>,www.example.com,"Seattle, Washington"
+<org_id>,<appliance_name>,www.example.com,"Seattle, Washington"
+<org_id>,<appliance_name>,www.example.com,"Seattle, Washington"

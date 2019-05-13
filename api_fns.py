@@ -269,6 +269,29 @@ def create_network_path(org_id, source_mp_name, target):
 
 
 #
+# Add network path target location (PUT /v3/path/{id}/targetLocation
+#                                   (with network path ID parameter))
+# - Adds the target location to the network path using the path ID and
+#       location information (as it isn't added during path creation).
+#   network_path_id - the network path ID
+#   location - the target location (e.g., "Seattle, Washington")
+#
+def add_network_path_location(network_path_id, location):
+    url = "https://{}/api/v3/path/{}/targetLocation".format(apm_server,
+              network_path_id)
+    headers = {
+        "Content-Type": "application/json"
+    }
+    body = {
+        "formattedAddress": location,
+        "lat": 0,
+        "lng": 0
+    }
+    return(requests.put(url, headers=headers, auth=(username, password),
+           json=body))
+
+
+#
 # Delete a network path (DELETE /v3/path/{id} (with network path ID parameter))
 # - Deletes the network path identified using an org ID, source MP name,
 #   and target
