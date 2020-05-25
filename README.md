@@ -6,12 +6,12 @@ To use these files:
 
 1. Clone the repository to your local system (e.g. git clone https://github.com/appneta/docs-apm-api-sample-code.git).
 	* A local directory is created.
-1. Update the credentials.py file with your APM server URL (e.g. app-01.pm.appneta.com) and APM credentials (username and password).
+1. Update the credentials.py file with your APM server URL (e.g. app-01.pm.appneta.com) and APM API credentials ([access token](https://docs.appneta.com/api-access-tokens.html)).
 1. [Download and install Python](https://www.python.org/downloads/).
 1. Run the sample programs and view the code files to see what they do and how they do it:
-	* The "app-..." files (e.g. python app-organizations.py) retrieve a variety of APM system data.
+	* The "app-..." files (e.g. python3 app-organizations.py) retrieve a variety of APM system data.
 	* The "path-..." files create/delete/show network paths identified in "paths.csv" file.
-		* Update "paths.csv" with valid information then run any of the "path-..." files (e.g. python path-create.py) to see what they do.
+		* Update "paths.csv" with valid information then run any of the "path-..." files (e.g. python3 path-create.py) to see what they do.
 	* "aggregation-test.py" is used to show how data is aggregated over time.
 	* Functions used in the program files are defined in api_fns.py.
 1. Modify any of these files or create your own code to use the APM API.

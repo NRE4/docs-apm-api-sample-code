@@ -4,7 +4,7 @@
 import requests
 import json
 import time
-from credentials import username, password, apm_server
+from credentials import apm_server, access_token
 
 
 #
@@ -45,7 +45,7 @@ def pp_json(json_obj, sort=True, indents=4):
 #
 def get_org():
     url = "https://{}/api/v3/organization".format(apm_server)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -59,7 +59,7 @@ def get_appliance(org_id=None):
     url = "https://{}/api/v3/appliance".format(apm_server)
     if org_id is not None:
         url += "?orgId={}".format(org_id)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -70,7 +70,7 @@ def get_appliance(org_id=None):
 #
 def get_appliance_id(appliance_id):
     url = "https://{}/api/v3/appliance/{}".format(apm_server, appliance_id)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -83,7 +83,7 @@ def get_web_app_group(org_id=None):
     url = "https://{}/api/v3/webApplication".format(apm_server)
     if org_id is not None:
         url += "?orgId={}".format(org_id)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -95,7 +95,7 @@ def get_web_app_group(org_id=None):
 def get_web_app_group_id(web_app_grp_id):
     url = "https://{}/api/v3/webApplication/{}".format(
           apm_server, web_app_grp_id)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -107,7 +107,7 @@ def get_web_app_group_id(web_app_grp_id):
 def get_web_path(web_app_grp_id):
     url = "https://{}/api/v3/webApplication/{}/monitor".format(
           apm_server, web_app_grp_id)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -127,7 +127,7 @@ def get_web_path_stats(org_id=None, start_time=None, end_time=None):
         url += "from={}&".format(start_time)
     if end_time is not None:
         url += "to={}".format(end_time)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -154,7 +154,7 @@ def get_web_path_stats_id(web_app_group_id, web_path_id, start_time=None,
         url += "to={}&".format(end_time)
     if metric is not None:
         url += "metric={}".format(metric)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -167,7 +167,7 @@ def get_network_path(org_id=None):
     url = "https://{}/api/v3/path".format(apm_server)
     if org_id is not None:
         url += "?orgId={}".format(org_id)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -200,7 +200,7 @@ def get_network_path_status(org_id=None):
     url = "https://{}/api/v3/path/status".format(apm_server)
     if org_id is not None:
         url += "?orgId={}".format(org_id)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -210,7 +210,7 @@ def get_network_path_status(org_id=None):
 #
 def get_network_path_status_id(path_id):
     url = "https://{}/api/v3/path/{}/status".format(apm_server, path_id)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -242,7 +242,7 @@ def get_network_path_stats_id(org_id=None, path_id=None, start_time=None,
         url += "to={}&".format(end_time)
     if metric is not None:
         url += "metric={}".format(metric)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -257,14 +257,15 @@ def get_network_path_stats_id(org_id=None, path_id=None, start_time=None,
 def create_network_path(org_id, source_mp_name, target):
     url = "https://{}/api/v3/path".format(apm_server)
     headers = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": "Token {}".format(access_token)
     }
     body = {
         "sourceAppliance": source_mp_name,
         "target": target,
         "orgId": org_id
     }
-    return(requests.post(url, headers=headers, auth=(username, password),
+    return(requests.post(url, headers=headers,
            json=body))
 
 
@@ -280,14 +281,15 @@ def add_network_path_location(network_path_id, location):
     url = "https://{}/api/v3/path/{}/targetLocation".format(apm_server,
               network_path_id)
     headers = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": "Token {}".format(access_token)
     }
     body = {
         "formattedAddress": location,
         "lat": 0,
         "lng": 0
     }
-    return(requests.put(url, headers=headers, auth=(username, password),
+    return(requests.put(url, headers=headers,
            json=body))
 
 
@@ -302,7 +304,7 @@ def add_network_path_location(network_path_id, location):
 def delete_network_path(org_id, source_mp_name, target):
     network_path_id = get_network_path_id(org_id, source_mp_name, target)
     url = "https://{}/api/v3/path/{}".format(apm_server, network_path_id)
-    return(requests.delete(url, auth=(username, password)))
+    return(requests.delete(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -312,7 +314,7 @@ def delete_network_path(org_id, source_mp_name, target):
 #
 def get_saved_lists(org_id):
     url = "https://{}/api/v3/savedList?orgId={}".format(apm_server, org_id)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
 
 
 #
@@ -325,4 +327,4 @@ def get_groups(org_id=None):
     url = "https://{}/api/v3/group".format(apm_server)
     if org_id is not None:
         url += "?orgId={}".format(org_id)
-    return(requests.get(url, auth=(username, password)))
+    return(requests.get(url, headers={"Authorization": "Token {}".format(access_token)}))
